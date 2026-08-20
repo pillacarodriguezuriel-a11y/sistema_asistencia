@@ -130,3 +130,48 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 }
+
+val verifyDomainPurity by tasks.registering {
+    group = "verification"
+    description = "Verifica que Domain no dependa de Android ni de capas externas."
+    inputs.dir(
+        layout.projectDirectory.dir(
+            "src/main/kotlin/pe/unsch/ceis/asistencia/domain",
+        ),
+    )
+
+    doLast {
+        val forbiddenImportPrefixes = listOf(
+            "import android.",
+            "import androidx.",
+            "import dagger.",
+            "import javax.inject.",
+            "import pe.unsch.ceis.asistencia.data.",
+            "import pe.unsch.ceis.asistencia.di.",
+            "import pe.unsch.ceis.asistencia.ui.",
+        )
+        val violations = inputs.files.files
+            .asSequence()
+            .filter { it.isFile && it.extension == "kt" }
+            .flatMap { source ->
+                source.readLines().asSequence().mapIndexedNotNull { index, line ->
+                    val normalized = line.trim()
+                    val forbidden = forbiddenImportPrefixes.any(normalized::startsWith)
+                    if (forbidden) {
+                        "${source.path}:${index + 1}: $normalized"
+                    } else {
+                        null
+                    }
+                }
+            }
+            .toList()
+
+        check(violations.isEmpty()) {
+            "Domain contiene dependencias prohibidas:\n${violations.joinToString("\n")}"
+        }
+    }
+}
+
+tasks.matching { it.name == "check" || it.name == "testDebugUnitTest" }.configureEach {
+    dependsOn(verifyDomainPurity)
+}
