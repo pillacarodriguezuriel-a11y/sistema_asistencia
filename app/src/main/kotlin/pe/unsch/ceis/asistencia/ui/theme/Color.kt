@@ -23,6 +23,10 @@ internal val SurfaceVariantLight = Color(0xFFF5F5F5)
 internal val SurfaceVariantDark = Color(0xFF212121)
 internal val BackgroundLight = Color(0xFFF9FAF7)
 internal val BackgroundDark = Color(0xFF0F1410)
+internal val OnSurfaceLight = Color(0xFF111411)
+internal val OnSurfaceDark = Color(0xFFF1F5F1)
+internal val OutlineLight = Color(0xFF4D564E)
+internal val OutlineDark = Color(0xFFB8C2B9)
 
 @Immutable
 data class AttendanceStatusColors(
@@ -45,4 +49,3 @@ internal val DarkAttendanceStatusColors = AttendanceStatusColors(
     absent = AbsentDark,
     justified = JustifiedDark,
 )
-

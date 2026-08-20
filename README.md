@@ -11,6 +11,8 @@ Estudiantes de la UNSCH sin depender de conexión a internet.
 - [Issue 3 del Sprint 1](docs/sprints/sprint-01/ISSUE-03.md)
 - [Issue 4 del Sprint 1](docs/sprints/sprint-01/ISSUE-04.md)
 - [Contrato Clean Architecture](docs/architecture/CLEAN_ARCHITECTURE.md)
+- [Issue 5 del Sprint 1](docs/sprints/sprint-01/ISSUE-05.md)
+- [Guía de estilos Material 3](docs/design/DESIGN_SYSTEM.md)
 - [Contrato técnico para Dev Data](docs/technical/SPEC-DEV-DATA.md)
 - [Contrato técnico para Dev Mobile](docs/technical/SPEC-DEV-MOBILE.md)
 

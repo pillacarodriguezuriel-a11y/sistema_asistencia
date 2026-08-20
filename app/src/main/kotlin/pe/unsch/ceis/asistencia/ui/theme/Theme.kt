@@ -23,8 +23,12 @@ private val LightColorScheme = lightColorScheme(
     onSecondary = Color.White,
     tertiary = LateLight,
     background = BackgroundLight,
+    onBackground = OnSurfaceLight,
     surface = SurfaceLight,
+    onSurface = OnSurfaceLight,
     surfaceVariant = SurfaceVariantLight,
+    onSurfaceVariant = Color(0xFF303832),
+    outline = OutlineLight,
     error = AbsentLight,
     onError = Color.White,
 )
@@ -38,8 +42,12 @@ private val DarkColorScheme = darkColorScheme(
     onSecondary = Color(0xFF001E2E),
     tertiary = LateDark,
     background = BackgroundDark,
+    onBackground = OnSurfaceDark,
     surface = SurfaceDark,
+    onSurface = OnSurfaceDark,
     surfaceVariant = SurfaceVariantDark,
+    onSurfaceVariant = Color(0xFFD4DDD5),
+    outline = OutlineDark,
     error = AbsentDark,
     onError = Color(0xFF2D0002),
 )
@@ -79,4 +87,3 @@ fun AsistenciaTheme(
         )
     }
 }
-
