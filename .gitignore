@@ -1,0 +1,65 @@
+# Gradle
+.gradle/
+**/.gradle/
+/build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Android SDK y configuración local
+local.properties
+*.hprof
+.cxx/
+**/.cxx/
+.externalNativeBuild/
+**/.externalNativeBuild/
+
+# Android Studio / IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+navigation.xml
+
+# Artefactos de compilación y distribución
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+output-metadata.json
+mapping.txt
+
+# Capturas y grabaciones locales
+/captures/
+**/captures/
+/screenshots/
+**/screenshots/
+*.webm
+
+# Firmas y secretos
+*.jks
+*.keystore
+*.p12
+*.pem
+keystore.properties
+keystore/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores y temporales
+.vscode/
+*.swp
+*.swo
+*~
+*.tmp
+
+# Reportes locales
+/reports/
+**/reports/
+
