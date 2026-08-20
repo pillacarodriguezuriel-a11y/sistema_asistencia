@@ -8,6 +8,7 @@ Estudiantes de la UNSCH sin depender de conexión a internet.
 - [Product Backlog](docs/product-backlog/README.md)
 - [Issue 1 del Sprint 1](docs/sprints/sprint-01/ISSUE-01.md)
 - [Issue 2 del Sprint 1](docs/sprints/sprint-01/ISSUE-02.md)
+- [Issue 3 del Sprint 1](docs/sprints/sprint-01/ISSUE-03.md)
 - [Contrato técnico para Dev Data](docs/technical/SPEC-DEV-DATA.md)
 - [Contrato técnico para Dev Mobile](docs/technical/SPEC-DEV-MOBILE.md)
 
