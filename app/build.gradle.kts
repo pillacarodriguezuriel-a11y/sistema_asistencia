@@ -1,4 +1,14 @@
 import java.util.Properties
+import org.gradle.api.DefaultTask
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.TaskAction
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -8,6 +18,86 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+}
+
+abstract class VerifyReleaseArtifactsTask : DefaultTask() {
+    @get:InputDirectory
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val apkDirectory: DirectoryProperty
+
+    @get:InputDirectory
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val mappingDirectory: DirectoryProperty
+
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val proguardRules: RegularFileProperty
+
+    @get:Input
+    abstract val maximumApkSizeBytes: Property<Long>
+
+    @TaskAction
+    fun verify() {
+        val apkFiles = apkDirectory.asFile.get()
+            .listFiles { file -> file.isFile && file.extension == "apk" }
+            .orEmpty()
+            .sortedBy { it.name }
+        check(apkFiles.isNotEmpty()) {
+            "No se encontró una APK release en ${apkDirectory.asFile.get()}."
+        }
+
+        val maximumBytes = maximumApkSizeBytes.get()
+        apkFiles.forEach { apk ->
+            check(apk.length() < maximumBytes) {
+                "${apk.name} pesa ${apk.length()} bytes y supera la meta de $maximumBytes bytes."
+            }
+            val sizeMiB = apk.length().toDouble() / (1024 * 1024)
+            logger.lifecycle("${apk.name}: %.2f MiB (meta: < 15 MiB)".format(sizeMiB))
+        }
+
+        val mappingFile = mappingDirectory.file("mapping.txt").get().asFile
+        val configurationFile = mappingDirectory.file("configuration.txt").get().asFile
+        check(mappingFile.isFile && mappingFile.length() > 0L) {
+            "R8 no generó mapping.txt; no sería posible reconstruir trazas ofuscadas."
+        }
+        check(configurationFile.isFile && configurationFile.length() > 0L) {
+            "R8 no generó configuration.txt para auditar las reglas aplicadas."
+        }
+
+        val mappingText = mappingFile.readText()
+        val preservedClassMappings = listOf(
+            "pe.unsch.ceis.asistencia.Hilt_MainActivity -> " +
+                "pe.unsch.ceis.asistencia.Hilt_MainActivity:",
+            "pe.unsch.ceis.asistencia.ui.base.BaseViewModel -> " +
+                "pe.unsch.ceis.asistencia.ui.base.BaseViewModel:",
+            "pe.unsch.ceis.asistencia.ui.base.BaseViewModel_Factory -> " +
+                "pe.unsch.ceis.asistencia.ui.base.BaseViewModel_Factory:",
+        )
+        val missingClassMappings = preservedClassMappings.filterNot(mappingText::contains)
+        check(missingClassMappings.isEmpty()) {
+            "R8 renombró o retiró clases críticas de Hilt/ViewModel: " +
+                missingClassMappings.joinToString()
+        }
+
+        val rulesText = proguardRules.asFile.get().readText()
+        val criticalRules = mapOf(
+            "anotaciones" to "RuntimeVisibleAnnotations",
+            "Room" to "@androidx.room.Entity",
+            "Hilt" to "@dagger.hilt.android.lifecycle.HiltViewModel",
+            "Apache POI" to "org.apache.poi.xssf.usermodel.XSSFWorkbook",
+            "ML Kit" to "com.google.mlkit.vision.barcode.",
+            "Compose" to "@androidx.compose.runtime.Immutable",
+            "coroutines" to "kotlin.coroutines.jvm.internal.BaseContinuationImpl",
+        )
+        val missingRules = criticalRules.filterValues { token -> token !in rulesText }.keys
+        check(missingRules.isEmpty()) {
+            "Faltan reglas R8 críticas para: ${missingRules.joinToString()}."
+        }
+
+        logger.lifecycle(
+            "R8 verificado: mapping.txt y configuration.txt disponibles; reglas críticas presentes.",
+        )
+    }
 }
 
 val keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -228,4 +318,17 @@ val verifyLayerBoundaries by tasks.registering {
 
 tasks.matching { it.name == "check" || it.name == "testDebugUnitTest" }.configureEach {
     dependsOn(verifyDomainPurity, verifyLayerBoundaries)
+}
+
+val verifyReleaseApkSize by tasks.registering(VerifyReleaseArtifactsTask::class) {
+    group = "verification"
+    description = "Comprueba que la APK release sea menor a 15 MiB y que R8 genere sus metadatos."
+    apkDirectory.set(layout.buildDirectory.dir("outputs/apk/release"))
+    mappingDirectory.set(layout.buildDirectory.dir("outputs/mapping/release"))
+    proguardRules.set(layout.projectDirectory.file("proguard-rules.pro"))
+    maximumApkSizeBytes.set(15L * 1024L * 1024L)
+}
+
+tasks.matching { it.name == "assembleRelease" }.configureEach {
+    finalizedBy(verifyReleaseApkSize)
 }

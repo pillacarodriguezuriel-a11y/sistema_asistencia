@@ -13,8 +13,10 @@ Estudiantes de la UNSCH sin depender de conexión a internet.
 - [Contrato Clean Architecture](docs/architecture/CLEAN_ARCHITECTURE.md)
 - [Issue 5 del Sprint 1](docs/sprints/sprint-01/ISSUE-05.md)
 - [Issue 7 del Sprint 1](docs/sprints/sprint-01/ISSUE-07.md)
+- [Issue 8 del Sprint 1](docs/sprints/sprint-01/ISSUE-08.md)
 - [Guía de estilos Material 3](docs/design/DESIGN_SYSTEM.md)
 - [Contrato de inyección de dependencias](docs/architecture/DEPENDENCY_INJECTION.md)
+- [Guía R8/ProGuard y tamaño release](docs/release/R8_PROGUARD.md)
 - [Contrato técnico para Dev Data](docs/technical/SPEC-DEV-DATA.md)
 - [Contrato técnico para Dev Mobile](docs/technical/SPEC-DEV-MOBILE.md)
 
