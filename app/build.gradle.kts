@@ -124,6 +124,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
 
     androidTestImplementation(composeBom)
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
@@ -172,6 +173,59 @@ val verifyDomainPurity by tasks.registering {
     }
 }
 
+val verifyLayerBoundaries by tasks.registering {
+    group = "verification"
+    description = "Verifica que UI, Data y Core respeten la dirección de dependencias."
+    inputs.dir(
+        layout.projectDirectory.dir(
+            "src/main/kotlin/pe/unsch/ceis/asistencia",
+        ),
+    )
+
+    doLast {
+        val forbiddenByLayer = mapOf(
+            "/ui/" to listOf(
+                "import pe.unsch.ceis.asistencia.data.",
+                "import pe.unsch.ceis.asistencia.di.",
+            ),
+            "/data/" to listOf(
+                "import pe.unsch.ceis.asistencia.ui.",
+                "import pe.unsch.ceis.asistencia.di.",
+            ),
+            "/core/" to listOf(
+                "import pe.unsch.ceis.asistencia.data.",
+                "import pe.unsch.ceis.asistencia.di.",
+                "import pe.unsch.ceis.asistencia.domain.",
+                "import pe.unsch.ceis.asistencia.ui.",
+            ),
+        )
+        val violations = inputs.files.files
+            .asSequence()
+            .filter { it.isFile && it.extension == "kt" }
+            .flatMap { source ->
+                val normalizedPath = source.invariantSeparatorsPath
+                val forbiddenImports = forbiddenByLayer.entries
+                    .firstOrNull { (pathSegment, _) -> pathSegment in normalizedPath }
+                    ?.value
+                    .orEmpty()
+
+                source.readLines().asSequence().mapIndexedNotNull { index, line ->
+                    val normalizedLine = line.trim()
+                    if (forbiddenImports.any(normalizedLine::startsWith)) {
+                        "${source.path}:${index + 1}: $normalizedLine"
+                    } else {
+                        null
+                    }
+                }
+            }
+            .toList()
+
+        check(violations.isEmpty()) {
+            "Se detectaron dependencias de capa prohibidas:\n${violations.joinToString("\n")}"
+        }
+    }
+}
+
 tasks.matching { it.name == "check" || it.name == "testDebugUnitTest" }.configureEach {
-    dependsOn(verifyDomainPurity)
+    dependsOn(verifyDomainPurity, verifyLayerBoundaries)
 }

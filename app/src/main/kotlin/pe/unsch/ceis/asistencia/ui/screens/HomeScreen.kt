@@ -19,6 +19,7 @@ import pe.unsch.ceis.asistencia.ui.theme.AsistenciaTheme
 
 @Composable
 fun HomeScreen(
+    dependencyGraphReady: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -40,7 +41,7 @@ fun HomeScreen(
                 text = "Centro de Estudiantes UNSCH",
                 style = MaterialTheme.typography.bodyLarge,
             )
-            OfflineReadyCard()
+            OfflineReadyCard(dependencyGraphReady = dependencyGraphReady)
         }
     }
 }
@@ -49,7 +50,6 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenPreview() {
     AsistenciaTheme {
-        HomeScreen()
+        HomeScreen(dependencyGraphReady = true)
     }
 }
-

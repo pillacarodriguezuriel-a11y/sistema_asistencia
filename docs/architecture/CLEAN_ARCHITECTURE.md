@@ -45,10 +45,12 @@ transforman excepciones de infraestructura en `Error`, pero nunca absorben
 
 La tarea `verifyDomainPurity` inspecciona los imports de `domain/` y falla si
 encuentra Android, AndroidX, Dagger/Hilt o referencias hacia `data`, `di` o
-`ui`. Está conectada a `testDebugUnitTest` y `check`.
+`ui`. La tarea `verifyLayerBoundaries` impide referencias `ui -> data/di`,
+`data -> ui/di` y cualquier acoplamiento de `core` con las capas de la
+aplicación. Ambas están conectadas a `testDebugUnitTest` y `check`.
 
 ```text
 ./gradlew verifyDomainPurity
+./gradlew verifyLayerBoundaries
 ./gradlew testDebugUnitTest
 ```
-

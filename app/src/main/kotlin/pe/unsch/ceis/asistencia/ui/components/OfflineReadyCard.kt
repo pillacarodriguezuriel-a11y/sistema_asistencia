@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun OfflineReadyCard(
+    dependencyGraphReady: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -27,14 +28,21 @@ fun OfflineReadyCard(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text(
-                text = "Preparado para trabajar sin conexión",
+                text = if (dependencyGraphReady) {
+                    "Preparado para trabajar sin conexión"
+                } else {
+                    "Inicializando servicios locales"
+                },
                 style = MaterialTheme.typography.titleLarge,
             )
             Text(
-                text = "Importa el padrón y registra asistencias directamente en el dispositivo.",
+                text = if (dependencyGraphReady) {
+                    "Importa el padrón y registra asistencias directamente en el dispositivo."
+                } else {
+                    "Configurando los recursos necesarios para la aplicación."
+                },
                 style = MaterialTheme.typography.bodyLarge,
             )
         }
     }
 }
-
