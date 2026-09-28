@@ -36,16 +36,18 @@ data class AttendanceStatusColors(
     val justified: Color,
 )
 
-internal val LightAttendanceStatusColors = AttendanceStatusColors(
-    present = PresentLight,
-    late = LateLight,
-    absent = AbsentLight,
-    justified = JustifiedLight,
-)
+internal val LightAttendanceStatusColors =
+    AttendanceStatusColors(
+        present = PresentLight,
+        late = LateLight,
+        absent = AbsentLight,
+        justified = JustifiedLight,
+    )
 
-internal val DarkAttendanceStatusColors = AttendanceStatusColors(
-    present = PresentDark,
-    late = LateDark,
-    absent = AbsentDark,
-    justified = JustifiedDark,
-)
+internal val DarkAttendanceStatusColors =
+    AttendanceStatusColors(
+        present = PresentDark,
+        late = LateDark,
+        absent = AbsentDark,
+        justified = JustifiedDark,
+    )

@@ -7,4 +7,3 @@ data class RegistroAsistencia(
     val estado: EstadoAsistencia,
     val timestamp: Long,
 )
-

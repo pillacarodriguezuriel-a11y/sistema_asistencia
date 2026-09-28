@@ -6,4 +6,3 @@ data class Actividad(
     val fechaInicio: Long,
     val descripcion: String,
 )
-

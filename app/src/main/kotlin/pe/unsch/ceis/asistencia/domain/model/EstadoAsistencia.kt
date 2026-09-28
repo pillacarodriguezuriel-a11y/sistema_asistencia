@@ -6,4 +6,3 @@ enum class EstadoAsistencia {
     FALTA,
     JUSTIFICADO,
 }
-

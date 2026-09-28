@@ -44,11 +44,12 @@ data class AsistenciaEntity(
     }
 
     companion object {
-        val ESTADOS_VALIDOS: Set<String> = setOf(
-            "PRESENTE",
-            "TARDANZA",
-            "FALTA",
-            "JUSTIFICADO",
-        )
+        val ESTADOS_VALIDOS: Set<String> =
+            setOf(
+                "PRESENTE",
+                "TARDANZA",
+                "FALTA",
+                "JUSTIFICADO",
+            )
     }
 }

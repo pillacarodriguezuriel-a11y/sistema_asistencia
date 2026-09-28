@@ -31,14 +31,16 @@ fun PrimaryActionButton(
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = 56.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .heightIn(min = 56.dp),
         enabled = enabled && !loading,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-        ),
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+            ),
         contentPadding = ButtonDefaults.ContentPadding,
     ) {
         Row(
@@ -47,11 +49,12 @@ fun PrimaryActionButton(
         ) {
             if (loading) {
                 CircularProgressIndicator(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .semantics {
-                            contentDescription = "Procesando"
-                        },
+                    modifier =
+                        Modifier
+                            .size(24.dp)
+                            .semantics {
+                                contentDescription = "Procesando"
+                            },
                     color = MaterialTheme.colorScheme.onPrimary,
                     strokeWidth = 3.dp,
                 )
@@ -85,4 +88,3 @@ private fun PrimaryActionButtonPreview() {
         )
     }
 }
-

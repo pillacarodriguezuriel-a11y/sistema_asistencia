@@ -1,7 +1,9 @@
 package pe.unsch.ceis.asistencia.domain.model
 
 sealed interface ResultState<out T> {
-    data class Success<T>(val data: T) : ResultState<T>
+    data class Success<T>(
+        val data: T,
+    ) : ResultState<T>
 
     data class Error(
         val message: String,
@@ -10,4 +12,3 @@ sealed interface ResultState<out T> {
 
     data object Loading : ResultState<Nothing>
 }
-

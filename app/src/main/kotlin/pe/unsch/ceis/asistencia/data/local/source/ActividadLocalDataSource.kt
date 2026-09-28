@@ -8,4 +8,3 @@ interface ActividadLocalDataSource {
 
     fun observarTodas(): Flow<List<ActividadEntity>>
 }
-

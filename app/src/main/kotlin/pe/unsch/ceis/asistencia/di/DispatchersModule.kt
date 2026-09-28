@@ -4,18 +4,19 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import pe.unsch.ceis.asistencia.core.coroutines.CoroutineDispatchers
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object DispatchersModule {
     @Provides
     @Singleton
-    fun provideCoroutineDispatchers(): CoroutineDispatchers = CoroutineDispatchers(
-        main = Dispatchers.Main,
-        io = Dispatchers.IO,
-        default = Dispatchers.Default,
-    )
+    fun provideCoroutineDispatchers(): CoroutineDispatchers =
+        CoroutineDispatchers(
+            main = Dispatchers.Main,
+            io = Dispatchers.IO,
+            default = Dispatchers.Default,
+        )
 }

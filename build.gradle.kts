@@ -6,4 +6,5 @@ plugins {
     id("com.google.devtools.ksp") version "2.1.21-2.0.1" apply false
     id("com.google.dagger.hilt.android") version "2.57.1" apply false
     id("androidx.room") version "2.8.5" apply false
+    id("org.jlleitschuh.gradle.ktlint") version "14.2.0" apply false
 }

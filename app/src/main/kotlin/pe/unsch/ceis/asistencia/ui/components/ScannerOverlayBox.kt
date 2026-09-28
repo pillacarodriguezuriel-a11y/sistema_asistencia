@@ -39,34 +39,38 @@ fun ScannerOverlayBox(
     val cornerPulse by transition.animateFloat(
         initialValue = 0.65f,
         targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 900),
-            repeatMode = RepeatMode.Reverse,
-        ),
+        animationSpec =
+            infiniteRepeatable(
+                animation = tween(durationMillis = 900),
+                repeatMode = RepeatMode.Reverse,
+            ),
         label = "corner-pulse",
     )
     val scanProgress by transition.animateFloat(
         initialValue = 0.12f,
         targetValue = 0.88f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1_600),
-            repeatMode = RepeatMode.Reverse,
-        ),
+        animationSpec =
+            infiniteRepeatable(
+                animation = tween(durationMillis = 1_600),
+                repeatMode = RepeatMode.Reverse,
+            ),
         label = "scan-progress",
     )
     val accent = MaterialTheme.colorScheme.primary
 
     Column(
-        modifier = modifier.semantics {
-            contentDescription = instruction
-        },
+        modifier =
+            modifier.semantics {
+                contentDescription = instruction
+            },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Canvas(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1.58f),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1.58f),
         ) {
             val cornerLength = size.minDimension * 0.20f
             val strokeWidth = 3.dp.toPx() * cornerPulse
@@ -75,7 +79,10 @@ fun ScannerOverlayBox(
             val right = size.width - strokeWidth
             val bottom = size.height - strokeWidth
 
-            fun cornerLine(start: Offset, end: Offset) {
+            fun cornerLine(
+                start: Offset,
+                end: Offset,
+            ) {
                 drawLine(
                     color = accent.copy(alpha = cornerPulse),
                     start = start,
@@ -106,12 +113,12 @@ fun ScannerOverlayBox(
 
         Text(
             text = instruction,
-            modifier = Modifier
-                .background(
-                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.92f),
-                    shape = RoundedCornerShape(12.dp),
-                )
-                .padding(horizontal = 16.dp, vertical = 10.dp),
+            modifier =
+                Modifier
+                    .background(
+                        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.92f),
+                        shape = RoundedCornerShape(12.dp),
+                    ).padding(horizontal = 16.dp, vertical = 10.dp),
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelLarge,
         )
@@ -133,13 +140,13 @@ fun ScannerOverlayBox(
 private fun ScannerOverlayBoxPreview() {
     AsistenciaTheme {
         Box(
-            modifier = Modifier
-                .size(width = 360.dp, height = 300.dp)
-                .padding(24.dp),
+            modifier =
+                Modifier
+                    .size(width = 360.dp, height = 300.dp)
+                    .padding(24.dp),
             contentAlignment = Alignment.Center,
         ) {
             ScannerOverlayBox()
         }
     }
 }
-

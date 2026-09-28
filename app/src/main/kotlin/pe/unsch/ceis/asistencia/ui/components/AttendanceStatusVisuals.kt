@@ -17,25 +17,28 @@ internal data class AttendanceStatusVisuals(
 internal fun EstadoAsistencia.visuals(): AttendanceStatusVisuals {
     val statusColors = MaterialTheme.attendanceStatusColors
     return when (this) {
-        EstadoAsistencia.PRESENTE -> AttendanceStatusVisuals(
-            label = "Presente",
-            accent = statusColors.present,
-        )
+        EstadoAsistencia.PRESENTE ->
+            AttendanceStatusVisuals(
+                label = "Presente",
+                accent = statusColors.present,
+            )
 
-        EstadoAsistencia.TARDANZA -> AttendanceStatusVisuals(
-            label = "Tardanza",
-            accent = statusColors.late,
-        )
+        EstadoAsistencia.TARDANZA ->
+            AttendanceStatusVisuals(
+                label = "Tardanza",
+                accent = statusColors.late,
+            )
 
-        EstadoAsistencia.FALTA -> AttendanceStatusVisuals(
-            label = "Falta",
-            accent = statusColors.absent,
-        )
+        EstadoAsistencia.FALTA ->
+            AttendanceStatusVisuals(
+                label = "Falta",
+                accent = statusColors.absent,
+            )
 
-        EstadoAsistencia.JUSTIFICADO -> AttendanceStatusVisuals(
-            label = "Justificado",
-            accent = statusColors.justified,
-        )
+        EstadoAsistencia.JUSTIFICADO ->
+            AttendanceStatusVisuals(
+                label = "Justificado",
+                accent = statusColors.justified,
+            )
     }
 }
-

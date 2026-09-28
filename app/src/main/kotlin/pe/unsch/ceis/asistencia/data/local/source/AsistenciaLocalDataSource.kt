@@ -15,8 +15,5 @@ interface AsistenciaLocalDataSource {
         estudianteCodigo: String,
     ): Boolean
 
-    fun observarPorActividad(
-        actividadId: Long,
-    ): Flow<List<AsistenciaEntity>>
+    fun observarPorActividad(actividadId: Long): Flow<List<AsistenciaEntity>>
 }
-

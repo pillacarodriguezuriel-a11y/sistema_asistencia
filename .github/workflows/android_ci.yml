@@ -37,6 +37,9 @@ jobs:
       - name: Grant Gradle Wrapper permission
         run: chmod +x gradlew
 
+      - name: Ejecutar Análisis Estático (Linter)
+        run: ./gradlew --no-daemon ktlintCheck
+
       - name: Run debug unit tests
         run: ./gradlew --no-daemon testDebugUnitTest
 

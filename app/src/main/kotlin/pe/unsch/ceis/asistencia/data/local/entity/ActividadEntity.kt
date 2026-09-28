@@ -11,4 +11,3 @@ data class ActividadEntity(
     val fechaInicio: Long,
     val descripcion: String,
 )
-

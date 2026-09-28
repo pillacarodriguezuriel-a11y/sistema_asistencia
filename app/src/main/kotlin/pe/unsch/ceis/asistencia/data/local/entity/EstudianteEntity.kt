@@ -17,4 +17,3 @@ data class EstudianteEntity(
     val nombresApellidos: String,
     val correoInstitucional: String,
 )
-
