@@ -18,13 +18,15 @@ class BaseViewModelTest {
     fun `marks dependency graph as ready with injected dispatcher`() =
         runTest(mainDispatcherRule.dispatcher) {
             val testDispatcher = mainDispatcherRule.dispatcher
-            val viewModel = BaseViewModel(
-                dispatchers = CoroutineDispatchers(
-                    main = testDispatcher,
-                    io = testDispatcher,
-                    default = testDispatcher,
-                ),
-            )
+            val viewModel =
+                BaseViewModel(
+                    dispatchers =
+                        CoroutineDispatchers(
+                            main = testDispatcher,
+                            io = testDispatcher,
+                            default = testDispatcher,
+                        ),
+                )
 
             assertFalse(viewModel.uiState.value.dependencyGraphReady)
             advanceUntilIdle()

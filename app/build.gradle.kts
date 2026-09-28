@@ -1,4 +1,3 @@
-import java.util.Properties
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
@@ -10,6 +9,7 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -19,6 +19,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
     id("androidx.room")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 abstract class VerifyReleaseArtifactsTask : DefaultTask() {
@@ -39,10 +40,12 @@ abstract class VerifyReleaseArtifactsTask : DefaultTask() {
 
     @TaskAction
     fun verify() {
-        val apkFiles = apkDirectory.asFile.get()
-            .listFiles { file -> file.isFile && file.extension == "apk" }
-            .orEmpty()
-            .sortedBy { it.name }
+        val apkFiles =
+            apkDirectory.asFile
+                .get()
+                .listFiles { file -> file.isFile && file.extension == "apk" }
+                .orEmpty()
+                .sortedBy { it.name }
         check(apkFiles.isNotEmpty()) {
             "No se encontró una APK release en ${apkDirectory.asFile.get()}."
         }
@@ -66,14 +69,15 @@ abstract class VerifyReleaseArtifactsTask : DefaultTask() {
         }
 
         val mappingText = mappingFile.readText()
-        val preservedClassMappings = listOf(
-            "pe.unsch.ceis.asistencia.Hilt_MainActivity -> " +
-                "pe.unsch.ceis.asistencia.Hilt_MainActivity:",
-            "pe.unsch.ceis.asistencia.ui.base.BaseViewModel -> " +
-                "pe.unsch.ceis.asistencia.ui.base.BaseViewModel:",
-            "pe.unsch.ceis.asistencia.ui.base.BaseViewModel_Factory -> " +
-                "pe.unsch.ceis.asistencia.ui.base.BaseViewModel_Factory:",
-        )
+        val preservedClassMappings =
+            listOf(
+                "pe.unsch.ceis.asistencia.Hilt_MainActivity -> " +
+                    "pe.unsch.ceis.asistencia.Hilt_MainActivity:",
+                "pe.unsch.ceis.asistencia.ui.base.BaseViewModel -> " +
+                    "pe.unsch.ceis.asistencia.ui.base.BaseViewModel:",
+                "pe.unsch.ceis.asistencia.ui.base.BaseViewModel_Factory -> " +
+                    "pe.unsch.ceis.asistencia.ui.base.BaseViewModel_Factory:",
+            )
         val missingClassMappings = preservedClassMappings.filterNot(mappingText::contains)
         check(missingClassMappings.isEmpty()) {
             "R8 renombró o retiró clases críticas de Hilt/ViewModel: " +
@@ -81,15 +85,16 @@ abstract class VerifyReleaseArtifactsTask : DefaultTask() {
         }
 
         val rulesText = proguardRules.asFile.get().readText()
-        val criticalRules = mapOf(
-            "anotaciones" to "RuntimeVisibleAnnotations",
-            "Room" to "@androidx.room.Entity",
-            "Hilt" to "@dagger.hilt.android.lifecycle.HiltViewModel",
-            "Apache POI" to "org.apache.poi.xssf.usermodel.XSSFWorkbook",
-            "ML Kit" to "com.google.mlkit.vision.barcode.",
-            "Compose" to "@androidx.compose.runtime.Immutable",
-            "coroutines" to "kotlin.coroutines.jvm.internal.BaseContinuationImpl",
-        )
+        val criticalRules =
+            mapOf(
+                "anotaciones" to "RuntimeVisibleAnnotations",
+                "Room" to "@androidx.room.Entity",
+                "Hilt" to "@dagger.hilt.android.lifecycle.HiltViewModel",
+                "Apache POI" to "org.apache.poi.xssf.usermodel.XSSFWorkbook",
+                "ML Kit" to "com.google.mlkit.vision.barcode.",
+                "Compose" to "@androidx.compose.runtime.Immutable",
+                "coroutines" to "kotlin.coroutines.jvm.internal.BaseContinuationImpl",
+            )
         val missingRules = criticalRules.filterValues { token -> token !in rulesText }.keys
         check(missingRules.isEmpty()) {
             "Faltan reglas R8 críticas para: ${missingRules.joinToString()}."
@@ -102,11 +107,12 @@ abstract class VerifyReleaseArtifactsTask : DefaultTask() {
 }
 
 val keystorePropertiesFile = rootProject.file("keystore.properties")
-val keystoreProperties = Properties().apply {
-    if (keystorePropertiesFile.isFile) {
-        keystorePropertiesFile.inputStream().use(::load)
+val keystoreProperties =
+    Properties().apply {
+        if (keystorePropertiesFile.isFile) {
+            keystorePropertiesFile.inputStream().use(::load)
+        }
     }
-}
 
 val signingKeys = listOf("storeFile", "storePassword", "keyAlias", "keyPassword")
 val releaseKeystoreFile = keystoreProperties.getProperty("storeFile")?.let(rootProject::file)
@@ -187,6 +193,18 @@ room {
     schemaDirectory("$projectDir/schemas")
 }
 
+ktlint {
+    version.set("1.5.0")
+    android.set(true)
+    verbose.set(true)
+    outputToConsole.set(true)
+    ignoreFailures.set(false)
+    filter {
+        exclude("**/generated/**")
+        exclude("**/build/**")
+    }
+}
+
 kotlin {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
@@ -225,6 +243,9 @@ dependencies {
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
+    testImplementation("androidx.test:core-ktx:1.6.1")
+    testImplementation("androidx.room:room-testing:$roomVersion")
+    testImplementation("org.robolectric:robolectric:4.16.1")
 
     androidTestImplementation(composeBom)
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
@@ -243,30 +264,31 @@ val verifyDomainPurity by tasks.registering {
     )
 
     doLast {
-        val forbiddenImportPrefixes = listOf(
-            "import android.",
-            "import androidx.",
-            "import dagger.",
-            "import javax.inject.",
-            "import pe.unsch.ceis.asistencia.data.",
-            "import pe.unsch.ceis.asistencia.di.",
-            "import pe.unsch.ceis.asistencia.ui.",
-        )
-        val violations = inputs.files.files
-            .asSequence()
-            .filter { it.isFile && it.extension == "kt" }
-            .flatMap { source ->
-                source.readLines().asSequence().mapIndexedNotNull { index, line ->
-                    val normalized = line.trim()
-                    val forbidden = forbiddenImportPrefixes.any(normalized::startsWith)
-                    if (forbidden) {
-                        "${source.path}:${index + 1}: $normalized"
-                    } else {
-                        null
+        val forbiddenImportPrefixes =
+            listOf(
+                "import android.",
+                "import androidx.",
+                "import dagger.",
+                "import javax.inject.",
+                "import pe.unsch.ceis.asistencia.data.",
+                "import pe.unsch.ceis.asistencia.di.",
+                "import pe.unsch.ceis.asistencia.ui.",
+            )
+        val violations =
+            inputs.files.files
+                .asSequence()
+                .filter { it.isFile && it.extension == "kt" }
+                .flatMap { source ->
+                    source.readLines().asSequence().mapIndexedNotNull { index, line ->
+                        val normalized = line.trim()
+                        val forbidden = forbiddenImportPrefixes.any(normalized::startsWith)
+                        if (forbidden) {
+                            "${source.path}:${index + 1}: $normalized"
+                        } else {
+                            null
+                        }
                     }
-                }
-            }
-            .toList()
+                }.toList()
 
         check(violations.isEmpty()) {
             "Domain contiene dependencias prohibidas:\n${violations.joinToString("\n")}"
@@ -284,42 +306,47 @@ val verifyLayerBoundaries by tasks.registering {
     )
 
     doLast {
-        val forbiddenByLayer = mapOf(
-            "/ui/" to listOf(
-                "import pe.unsch.ceis.asistencia.data.",
-                "import pe.unsch.ceis.asistencia.di.",
-            ),
-            "/data/" to listOf(
-                "import pe.unsch.ceis.asistencia.ui.",
-                "import pe.unsch.ceis.asistencia.di.",
-            ),
-            "/core/" to listOf(
-                "import pe.unsch.ceis.asistencia.data.",
-                "import pe.unsch.ceis.asistencia.di.",
-                "import pe.unsch.ceis.asistencia.domain.",
-                "import pe.unsch.ceis.asistencia.ui.",
-            ),
-        )
-        val violations = inputs.files.files
-            .asSequence()
-            .filter { it.isFile && it.extension == "kt" }
-            .flatMap { source ->
-                val normalizedPath = source.invariantSeparatorsPath
-                val forbiddenImports = forbiddenByLayer.entries
-                    .firstOrNull { (pathSegment, _) -> pathSegment in normalizedPath }
-                    ?.value
-                    .orEmpty()
+        val forbiddenByLayer =
+            mapOf(
+                "/ui/" to
+                    listOf(
+                        "import pe.unsch.ceis.asistencia.data.",
+                        "import pe.unsch.ceis.asistencia.di.",
+                    ),
+                "/data/" to
+                    listOf(
+                        "import pe.unsch.ceis.asistencia.ui.",
+                        "import pe.unsch.ceis.asistencia.di.",
+                    ),
+                "/core/" to
+                    listOf(
+                        "import pe.unsch.ceis.asistencia.data.",
+                        "import pe.unsch.ceis.asistencia.di.",
+                        "import pe.unsch.ceis.asistencia.domain.",
+                        "import pe.unsch.ceis.asistencia.ui.",
+                    ),
+            )
+        val violations =
+            inputs.files.files
+                .asSequence()
+                .filter { it.isFile && it.extension == "kt" }
+                .flatMap { source ->
+                    val normalizedPath = source.invariantSeparatorsPath
+                    val forbiddenImports =
+                        forbiddenByLayer.entries
+                            .firstOrNull { (pathSegment, _) -> pathSegment in normalizedPath }
+                            ?.value
+                            .orEmpty()
 
-                source.readLines().asSequence().mapIndexedNotNull { index, line ->
-                    val normalizedLine = line.trim()
-                    if (forbiddenImports.any(normalizedLine::startsWith)) {
-                        "${source.path}:${index + 1}: $normalizedLine"
-                    } else {
-                        null
+                    source.readLines().asSequence().mapIndexedNotNull { index, line ->
+                        val normalizedLine = line.trim()
+                        if (forbiddenImports.any(normalizedLine::startsWith)) {
+                            "${source.path}:${index + 1}: $normalizedLine"
+                        } else {
+                            null
+                        }
                     }
-                }
-            }
-            .toList()
+                }.toList()
 
         check(violations.isEmpty()) {
             "Se detectaron dependencias de capa prohibidas:\n${violations.joinToString("\n")}"

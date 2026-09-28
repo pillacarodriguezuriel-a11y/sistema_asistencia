@@ -18,14 +18,16 @@ enum class AttendanceFeedback {
 class AudioHapticHelper(
     context: Context,
 ) : Closeable {
-    private val vibrator: Vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        context.getSystemService(VibratorManager::class.java).defaultVibrator
-    } else {
-        context.getSystemService(Vibrator::class.java)
-    }
-    private val toneGenerator: ToneGenerator? = runCatching {
-        ToneGenerator(AudioManager.STREAM_MUSIC, TONE_VOLUME_PERCENT)
-    }.getOrNull()
+    private val vibrator: Vibrator =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            context.getSystemService(VibratorManager::class.java).defaultVibrator
+        } else {
+            context.getSystemService(Vibrator::class.java)
+        }
+    private val toneGenerator: ToneGenerator? =
+        runCatching {
+            ToneGenerator(AudioManager.STREAM_MUSIC, TONE_VOLUME_PERCENT)
+        }.getOrNull()
     private var closed = false
 
     @Synchronized
@@ -62,29 +64,32 @@ class AudioHapticHelper(
         val toneDurationMillis: Int,
     )
 
-    private fun AttendanceFeedback.pattern(): FeedbackPattern = when (this) {
-        AttendanceFeedback.SUCCESS -> FeedbackPattern(
-            vibrationPattern = longArrayOf(0, 50),
-            toneType = ToneGenerator.TONE_DTMF_D,
-            toneDurationMillis = 80,
-        )
+    private fun AttendanceFeedback.pattern(): FeedbackPattern =
+        when (this) {
+            AttendanceFeedback.SUCCESS ->
+                FeedbackPattern(
+                    vibrationPattern = longArrayOf(0, 50),
+                    toneType = ToneGenerator.TONE_DTMF_D,
+                    toneDurationMillis = 80,
+                )
 
-        AttendanceFeedback.DUPLICATE -> FeedbackPattern(
-            vibrationPattern = longArrayOf(0, 100, 80, 100),
-            toneType = ToneGenerator.TONE_DTMF_5,
-            toneDurationMillis = 150,
-        )
+            AttendanceFeedback.DUPLICATE ->
+                FeedbackPattern(
+                    vibrationPattern = longArrayOf(0, 100, 80, 100),
+                    toneType = ToneGenerator.TONE_DTMF_5,
+                    toneDurationMillis = 150,
+                )
 
-        AttendanceFeedback.ERROR -> FeedbackPattern(
-            vibrationPattern = longArrayOf(0, 300),
-            toneType = ToneGenerator.TONE_DTMF_1,
-            toneDurationMillis = 300,
-        )
-    }
+            AttendanceFeedback.ERROR ->
+                FeedbackPattern(
+                    vibrationPattern = longArrayOf(0, 300),
+                    toneType = ToneGenerator.TONE_DTMF_1,
+                    toneDurationMillis = 300,
+                )
+        }
 
     private companion object {
         const val TONE_VOLUME_PERCENT = 80
         const val NO_REPEAT = -1
     }
 }
-

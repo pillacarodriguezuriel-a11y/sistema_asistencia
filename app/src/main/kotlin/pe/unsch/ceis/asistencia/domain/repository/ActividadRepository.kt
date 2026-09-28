@@ -7,6 +7,9 @@ import pe.unsch.ceis.asistencia.domain.model.ResultState
 interface ActividadRepository {
     suspend fun crear(actividad: Actividad): ResultState<Actividad>
 
+    suspend fun obtenerPorId(id: Long): ResultState<Actividad?>
+
+    suspend fun eliminar(actividad: Actividad): ResultState<Unit>
+
     fun listar(): Flow<ResultState<List<Actividad>>>
 }
-

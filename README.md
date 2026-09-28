@@ -21,6 +21,10 @@ Estudiantes de la UNSCH sin depender de conexión a internet.
 - [Issue 10 del Sprint 2](docs/sprints/sprint-02/ISSUE-10.md)
 - [Issue 11 del Sprint 2](docs/sprints/sprint-02/ISSUE-11.md)
 - [Issue 12 del Sprint 2](docs/sprints/sprint-02/ISSUE-12.md)
+- [Issue 13 del Sprint 2](docs/sprints/sprint-02/ISSUE-13.md)
+- [Issue 14 del Sprint 2](docs/sprints/sprint-02/ISSUE-14.md)
+- [Issue 15 del Sprint 2](docs/sprints/sprint-02/ISSUE-15.md)
+- [Issue 16 del Sprint 2](docs/sprints/sprint-02/ISSUE-16.md)
 - [Contrato técnico para Dev Data](docs/technical/SPEC-DEV-DATA.md)
 - [Contrato técnico para Dev Mobile](docs/technical/SPEC-DEV-MOBILE.md)
 

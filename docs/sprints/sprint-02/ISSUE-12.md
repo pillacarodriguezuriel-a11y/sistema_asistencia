@@ -13,8 +13,9 @@
 - Esquema JSON versionado en `app/schemas`.
 - `DatabaseModule` con una base singleton llamada `asistencia_unsch.db` y
   proveedores para los tres DAOs.
-- Adaptadores Room para los DataSources y enlaces Hilt en
-  `LocalDataSourceModule`.
+- DAOs tipados disponibles para la integración de repositorios. Desde el Issue
+  13, las implementaciones de repositorio consumen estos DAOs directamente y
+  Hilt las enlaza en `RepositoryModule`.
 
 ## Política de migraciones
 

@@ -13,4 +13,3 @@ interface EstudianteRepository {
 
     fun listar(): Flow<ResultState<List<Estudiante>>>
 }
-

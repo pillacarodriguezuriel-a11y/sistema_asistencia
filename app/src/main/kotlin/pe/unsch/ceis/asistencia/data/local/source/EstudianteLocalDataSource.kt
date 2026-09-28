@@ -12,4 +12,3 @@ interface EstudianteLocalDataSource {
 
     fun observarTodos(): Flow<List<EstudianteEntity>>
 }
-

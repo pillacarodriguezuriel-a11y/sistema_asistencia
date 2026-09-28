@@ -6,4 +6,3 @@ data class Estudiante(
     val nombresApellidos: String,
     val correoInstitucional: String,
 )
-

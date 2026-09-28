@@ -25,11 +25,12 @@ import androidx.compose.ui.unit.dp
 import pe.unsch.ceis.asistencia.domain.model.EstadoAsistencia
 import pe.unsch.ceis.asistencia.ui.theme.AsistenciaTheme
 
-private val QuickStatuses = listOf(
-    EstadoAsistencia.PRESENTE,
-    EstadoAsistencia.TARDANZA,
-    EstadoAsistencia.JUSTIFICADO,
-)
+private val QuickStatuses =
+    listOf(
+        EstadoAsistencia.PRESENTE,
+        EstadoAsistencia.TARDANZA,
+        EstadoAsistencia.JUSTIFICADO,
+    )
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -56,32 +57,34 @@ fun QuickStatusChipGroup(
             QuickStatuses.forEach { status ->
                 val visuals = status.visuals()
                 val selected = selectedStatus == status
-                val containerColor = if (selected) {
-                    visuals.accent.copy(alpha = 0.16f)
-                } else {
-                    MaterialTheme.colorScheme.surface
-                }
+                val containerColor =
+                    if (selected) {
+                        visuals.accent.copy(alpha = 0.16f)
+                    } else {
+                        MaterialTheme.colorScheme.surface
+                    }
 
                 Surface(
-                    modifier = Modifier
-                        .widthIn(min = 104.dp)
-                        .heightIn(min = 48.dp)
-                        .semantics {
-                            stateDescription = if (selected) "Seleccionado" else "No seleccionado"
-                        }
-                        .selectable(
-                            selected = selected,
-                            enabled = enabled,
-                            role = Role.RadioButton,
-                            onClick = { onStatusSelected(status) },
-                        ),
+                    modifier =
+                        Modifier
+                            .widthIn(min = 104.dp)
+                            .heightIn(min = 48.dp)
+                            .semantics {
+                                stateDescription = if (selected) "Seleccionado" else "No seleccionado"
+                            }.selectable(
+                                selected = selected,
+                                enabled = enabled,
+                                role = Role.RadioButton,
+                                onClick = { onStatusSelected(status) },
+                            ),
                     shape = RoundedCornerShape(24.dp),
                     color = containerColor,
                     contentColor = MaterialTheme.colorScheme.onSurface,
-                    border = BorderStroke(
-                        width = if (selected) 2.dp else 1.dp,
-                        color = visuals.accent,
-                    ),
+                    border =
+                        BorderStroke(
+                            width = if (selected) 2.dp else 1.dp,
+                            color = visuals.accent,
+                        ),
                 ) {
                     Text(
                         text = visuals.label,
@@ -115,4 +118,3 @@ private fun QuickStatusChipGroupPreview() {
         )
     }
 }
-

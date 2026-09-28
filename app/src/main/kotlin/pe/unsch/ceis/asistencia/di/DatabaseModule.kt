@@ -7,11 +7,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 import pe.unsch.ceis.asistencia.data.local.AppDatabase
 import pe.unsch.ceis.asistencia.data.local.dao.ActividadDao
 import pe.unsch.ceis.asistencia.data.local.dao.AsistenciaDao
 import pe.unsch.ceis.asistencia.data.local.dao.EstudianteDao
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -22,24 +22,23 @@ object DatabaseModule {
     @Singleton
     fun provideAppDatabase(
         @ApplicationContext context: Context,
-    ): AppDatabase = Room.databaseBuilder(
-        context,
-        AppDatabase::class.java,
-        DATABASE_NAME,
-    ).build()
+    ): AppDatabase =
+        Room
+            .databaseBuilder(
+                context,
+                AppDatabase::class.java,
+                DATABASE_NAME,
+            ).build()
 
     @Provides
     @Singleton
-    fun provideEstudianteDao(database: AppDatabase): EstudianteDao =
-        database.estudianteDao()
+    fun provideEstudianteDao(database: AppDatabase): EstudianteDao = database.estudianteDao()
 
     @Provides
     @Singleton
-    fun provideActividadDao(database: AppDatabase): ActividadDao =
-        database.actividadDao()
+    fun provideActividadDao(database: AppDatabase): ActividadDao = database.actividadDao()
 
     @Provides
     @Singleton
-    fun provideAsistenciaDao(database: AppDatabase): AsistenciaDao =
-        database.asistenciaDao()
+    fun provideAsistenciaDao(database: AppDatabase): AsistenciaDao = database.asistenciaDao()
 }

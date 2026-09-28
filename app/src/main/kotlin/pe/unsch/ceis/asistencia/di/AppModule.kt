@@ -23,4 +23,3 @@ object AppModule {
         @ApplicationContext applicationContext: Context,
     ): Resources = applicationContext.resources
 }
-

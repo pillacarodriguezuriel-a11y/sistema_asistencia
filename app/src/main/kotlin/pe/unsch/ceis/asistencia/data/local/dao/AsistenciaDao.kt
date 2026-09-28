@@ -35,9 +35,7 @@ interface AsistenciaDao {
         ORDER BY timestamp ASC
         """,
     )
-    fun obtenerAsistenciasPorActividad(
-        actividadId: Long,
-    ): Flow<List<AsistenciaEntity>>
+    fun obtenerAsistenciasPorActividad(actividadId: Long): Flow<List<AsistenciaEntity>>
 
     @Query(
         """
@@ -57,7 +55,5 @@ interface AsistenciaDao {
         ORDER BY a.timestamp ASC
         """,
     )
-    fun obtenerAsistenciasConEstudiante(
-        actividadId: Long,
-    ): Flow<List<AsistenciaConEstudiante>>
+    fun obtenerAsistenciasConEstudiante(actividadId: Long): Flow<List<AsistenciaConEstudiante>>
 }

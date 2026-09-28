@@ -16,9 +16,7 @@ import pe.unsch.ceis.asistencia.ui.screens.HomeScreen
 private data object HomeRoute
 
 @Composable
-fun AppNavHost(
-    modifier: Modifier = Modifier,
-) {
+fun AppNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
 
     NavHost(

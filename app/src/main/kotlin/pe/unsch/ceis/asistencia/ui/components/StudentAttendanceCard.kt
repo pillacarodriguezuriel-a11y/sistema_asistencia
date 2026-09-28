@@ -37,14 +37,16 @@ fun StudentAttendanceCard(
     val status = estado.visuals()
 
     Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .semantics(mergeDescendants = true) {
-                stateDescription = status.label
-            },
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .semantics(mergeDescendants = true) {
+                    stateDescription = status.label
+                },
+        colors =
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+            ),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
     ) {
         Column(
@@ -129,4 +131,3 @@ private fun StudentAttendanceCardPreview() {
         )
     }
 }
-

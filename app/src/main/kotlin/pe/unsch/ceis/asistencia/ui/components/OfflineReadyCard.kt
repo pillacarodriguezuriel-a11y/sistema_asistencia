@@ -19,28 +19,31 @@ fun OfflineReadyCard(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-        ),
+        colors =
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            ),
     ) {
         Column(
             modifier = Modifier.padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text(
-                text = if (dependencyGraphReady) {
-                    "Preparado para trabajar sin conexión"
-                } else {
-                    "Inicializando servicios locales"
-                },
+                text =
+                    if (dependencyGraphReady) {
+                        "Preparado para trabajar sin conexión"
+                    } else {
+                        "Inicializando servicios locales"
+                    },
                 style = MaterialTheme.typography.titleLarge,
             )
             Text(
-                text = if (dependencyGraphReady) {
-                    "Importa el padrón y registra asistencias directamente en el dispositivo."
-                } else {
-                    "Configurando los recursos necesarios para la aplicación."
-                },
+                text =
+                    if (dependencyGraphReady) {
+                        "Importa el padrón y registra asistencias directamente en el dispositivo."
+                    } else {
+                        "Configurando los recursos necesarios para la aplicación."
+                    },
                 style = MaterialTheme.typography.bodyLarge,
             )
         }
