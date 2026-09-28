@@ -1,10 +1,17 @@
 package pe.unsch.ceis.asistencia.data.local.entity
 
-/**
- * Contrato local preparado para recibir anotaciones Room en el Issue de BD.
- * Se mantiene sin Room para que este Issue defina únicamente las fronteras.
- */
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
+
+@Entity(
+    tableName = "estudiantes",
+    indices = [
+        Index(value = ["dni"], unique = true),
+    ],
+)
 data class EstudianteEntity(
+    @PrimaryKey
     val codigo: String,
     val dni: String,
     val nombresApellidos: String,

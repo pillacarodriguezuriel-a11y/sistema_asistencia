@@ -1,10 +1,10 @@
 package pe.unsch.ceis.asistencia.data.mapper
 
-import pe.unsch.ceis.asistencia.data.local.entity.RegistroAsistenciaEntity
+import pe.unsch.ceis.asistencia.data.local.entity.AsistenciaEntity
 import pe.unsch.ceis.asistencia.domain.model.EstadoAsistencia
 import pe.unsch.ceis.asistencia.domain.model.RegistroAsistencia
 
-fun RegistroAsistenciaEntity.toDomain(): RegistroAsistencia = RegistroAsistencia(
+fun AsistenciaEntity.toDomain(): RegistroAsistencia = RegistroAsistencia(
     id = id,
     actividadId = actividadId,
     estudianteCodigo = estudianteCodigo,
@@ -12,7 +12,7 @@ fun RegistroAsistenciaEntity.toDomain(): RegistroAsistencia = RegistroAsistencia
     timestamp = timestamp,
 )
 
-fun RegistroAsistencia.toEntity(): RegistroAsistenciaEntity = RegistroAsistenciaEntity(
+fun RegistroAsistencia.toEntity(): AsistenciaEntity = AsistenciaEntity(
     id = id,
     actividadId = actividadId,
     estudianteCodigo = estudianteCodigo,

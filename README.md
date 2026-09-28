@@ -17,6 +17,10 @@ Estudiantes de la UNSCH sin depender de conexión a internet.
 - [Guía de estilos Material 3](docs/design/DESIGN_SYSTEM.md)
 - [Contrato de inyección de dependencias](docs/architecture/DEPENDENCY_INJECTION.md)
 - [Guía R8/ProGuard y tamaño release](docs/release/R8_PROGUARD.md)
+- [Issue 9 del Sprint 2](docs/sprints/sprint-02/ISSUE-09.md)
+- [Issue 10 del Sprint 2](docs/sprints/sprint-02/ISSUE-10.md)
+- [Issue 11 del Sprint 2](docs/sprints/sprint-02/ISSUE-11.md)
+- [Issue 12 del Sprint 2](docs/sprints/sprint-02/ISSUE-12.md)
 - [Contrato técnico para Dev Data](docs/technical/SPEC-DEV-DATA.md)
 - [Contrato técnico para Dev Mobile](docs/technical/SPEC-DEV-MOBILE.md)
 

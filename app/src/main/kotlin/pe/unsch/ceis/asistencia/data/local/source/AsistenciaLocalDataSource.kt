@@ -1,14 +1,14 @@
 package pe.unsch.ceis.asistencia.data.local.source
 
 import kotlinx.coroutines.flow.Flow
-import pe.unsch.ceis.asistencia.data.local.entity.RegistroAsistenciaEntity
+import pe.unsch.ceis.asistencia.data.local.entity.AsistenciaEntity
 
 interface AsistenciaLocalDataSource {
     /**
      * La implementación Room debe insertar atómicamente y respaldar la
      * unicidad `(actividadId, estudianteCodigo)` mediante un índice único.
      */
-    suspend fun registrar(registro: RegistroAsistenciaEntity): Long
+    suspend fun registrar(registro: AsistenciaEntity): Long
 
     suspend fun existeRegistro(
         actividadId: Long,
@@ -17,6 +17,6 @@ interface AsistenciaLocalDataSource {
 
     fun observarPorActividad(
         actividadId: Long,
-    ): Flow<List<RegistroAsistenciaEntity>>
+    ): Flow<List<AsistenciaEntity>>
 }
 
